@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+  app:
+    image: drupal:7
+    links:
+      - db:mysql
+    ports:
+      - 80
+    restart: always
+    environment:
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: drupal
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    ports:
+      - 80
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      PMA_USER: root
+      PMA_PASSWORD: root
+
